@@ -71,7 +71,7 @@
 	"bootlimit=2\0" \
 	"bootpart=1\0" \
 	"altbootcmd=" \
-	"  echo Rollback to previous RootFs; "
+	"  echo Rollback to previous RootFs; " \
 	"  if test ${bootpart} = 1; " \
 	"    then setenv bootpart 2; " \
 	"  else " \
