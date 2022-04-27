@@ -69,6 +69,13 @@
 		"2M(sec),"	 \
 		"-(UBI)"
 
+#define COMMON_UPDATE_CMD \
+	"update_mmc_fw = "\
+		"ext4load mmc 0:1 $load_addr /boot/firmware.bin;"\
+		"sf probe 0:0;"\
+		"sf erase 0 0400000;"\
+		"sf write $load_addr 0 $filesize;\0"\
+
 #undef CONFIG_EXTRA_ENV_SETTINGS
 #define CONFIG_EXTRA_ENV_SETTINGS		\
 	"verify=no\0"				\
@@ -88,6 +95,7 @@
 	"kernelheader_size=0x40000\0"		\
 	"console=ttyS0,115200\0"		\
 	BOOTENV					\
+	COMMON_UPDATE_CMD					\
 	"boot_scripts=trustbox_boot.scr\0"	\
 	"boot_script_hdr=hdr_trustbox_bs.out\0"	\
 	"scan_dev_for_boot_part="		\
@@ -127,14 +135,16 @@
 		"bootm $load_addr#$board\0"
 
 #undef CONFIG_BOOTCOMMAND
-#ifdef CONFIG_TFABOOT
-#undef QSPI_NOR_BOOTCOMMAND
-#define QSPI_NOR_BOOTCOMMAND "pfe stop; run distro_bootcmd; run qspi_bootcmd; "\
-			     "env exists secureboot && esbc_halt;"
-#else
+// #ifdef CONFIG_TFABOOT
+// #undef QSPI_NOR_BOOTCOMMAND
+// #define QSPI_NOR_BOOTCOMMAND "pfe stop; run distro_bootcmd; run qspi_bootcmd; "\
+// 			     "env exists secureboot && esbc_halt;"
+// #else
+// #define CONFIG_BOOTCOMMAND "pfe stop; run distro_bootcmd; run qspi_bootcmd; "\
+// 			   "env exists secureboot && esbc_halt;"
+// #endif
 #define CONFIG_BOOTCOMMAND "pfe stop; run distro_bootcmd; run qspi_bootcmd; "\
-			   "env exists secureboot && esbc_halt;"
-#endif
+			   			"env exists secureboot && esbc_halt;"
 
 #include <asm/fsl_secure_boot.h>
 
