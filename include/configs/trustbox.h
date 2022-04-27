@@ -58,6 +58,30 @@
 #define CONFIG_SYS_MEMTEST_START	0x80000000
 #define CONFIG_SYS_MEMTEST_END		0x9fffffff
 
+//--------------------------- UPDATE ------------------------------------
+
+#define DEBUG_UPDATE \
+	"DEBUG_VERSION=0"\
+	"\0"
+
+#define CONFIG_BOOTCOUNT_LIMIT
+#define CONFIG_BOOTCOUNT_ENV
+
+#define CONFIG_EXTRA_ENV_SETTINGS_UPDATE \
+	"bootlimit=2\0" \
+	"bootpart=1\0" \
+	"altbootcmd=" \
+	"  echo Rollback to previous RootFs; "
+	"  if test ${bootpart} = 1; " \
+	"    then setenv bootpart 2; " \
+	"  else " \
+	"     setenv bootpart 1; " \
+	"  fi; setenv bootcount 0; saveenv; " \
+	"  bootcmd;\0" \
+
+//--------------------------- UPDATE ------------------------------------
+
+
 #define MTDIDS_DEFAULT \
 	"nor0=1550000.spi"
 
